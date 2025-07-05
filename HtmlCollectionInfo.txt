@@ -1,0 +1,90 @@
+In JavaScript and DOM (Document Object Model) manipulation, an HTMLCollection is a special array-like object that represents a live collection of HTML elements.
+
+🔹 What is an HTMLCollection?
+
+
+An HTMLCollection is returned by certain DOM methods, like:
+
+document.getElementsByTagName("div");
+document.getElementsByClassName("example");
+document.forms; // returns all <form> elements
+It looks like an array, but it’s not a real array. You can access its elements with an index (like collection[0]) and use .length, but you can’t use array methods like .forEach() or .map() directly unless you convert it to an array.
+
+🔹 What does 
+“live”
+ mean?
+
+
+A live HTMLCollection automatically updates itself when the document changes.
+
+
+
+That means if you add or remove elements from the DOM that match the original selection criteria, the HTMLCollection updates immediately.
+
+
+
+📌 Example:
+<body>
+  <div id="container">
+    <p>First</p>
+  </div>
+
+  <script>
+    const paragraphs = document.getElementsByTagName("p");
+    console.log(paragraphs.length); // 1
+
+    const newP = document.createElement("p");
+    newP.textContent = "Second";
+    document.getElementById("container").appendChild(newP);
+
+    console.log(paragraphs.length); // 2 ✅ live update
+  </script>
+</body>
+The paragraphs variable is an HTMLCollection, and even though we didn’t reassign it, it now includes the new <p> element. That’s because it’s live.
+
+🔸 Comparison: HTMLCollection vs NodeList
+Feature
+
+HTMLCollection
+
+NodeList
+
+Returned by
+
+getElementsBy*()
+
+querySelectorAll()
+
+Array-like
+
+Yes
+
+Yes
+
+Live
+
+✅ Yes
+
+❌ No (usually)
+
+Array methods
+
+❌ No
+
+❌ No
+
+Convert to array
+
+Array.from(collection) or [...collection]
+
+Same
+
+✅ When it matters:
+
+
+If you’re doing DOM manipulation and want a snapshot (unchanging list), use querySelectorAll() — it returns a static NodeList.
+
+
+
+If you want an auto-updating list, use getElementsByTagName() or getElementsByClassName() which return live HTMLCollections.
+
